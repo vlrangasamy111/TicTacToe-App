@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int get_player_slot() {
+    int slot;
+    printf("Enter slot number (1-9): ");
+    scanf("%d", &slot);
+    return slot;
+}
+
+int main() {
+    char board[3][3];
+    char player1_symbol, player2_symbol;
+    int current_player;
+    
+    // Initialize board
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            board[i][j] = '-';
+        }
+    }
+    
+    // Random toss
+    srand(time(NULL));
+    int toss = rand() % 2;
+    if (toss == 0) {
+        current_player = 1;
+        player1_symbol = 'X';
+        player2_symbol = 'O';
+        printf("Toss: Player 1 starts! P1: X, P2: O\n");
+    } else {
+        current_player = 2;
+        player2_symbol = 'X';
+        player1_symbol = 'O';
+        printf("Toss: Player 2 starts! P1: O, P2: X\n");
+    }
+    
+    // Print board
+    printf("  1 2 3\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", i + 1);
+        for (int j = 0; j < 3; j++) {
+            printf("%c ", board[i][j]);
+            if (j < 2) printf("| ");
+        }
+        printf("\n");
+        if (i < 2) printf("  ----+---+----\n");
+    }
+    
+    // Get first move
+    printf("Current player: Player %d\n", current_player);
+    int slot = get_player_slot();
+    printf("Player %d chose slot %d\n", current_player, slot);
+    
+    return 0;
+}
