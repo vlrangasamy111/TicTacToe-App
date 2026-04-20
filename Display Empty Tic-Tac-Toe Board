@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main() {
+    char board[3][3];  // 2D array for board representation
+    
+    // Initialize all cells to '-' using nested loops
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            board[i][j] = '-';
+        }
+    }
+    
+    // Print the board using nested loops with proper spacing
+    printf("  1 2 3\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", i + 1);
+        for (int j = 0; j < 3; j++) {
+            printf("%c ", board[i][j]);
+            if (j < 2) printf("| ");
+        }
+        printf("\n");
+        if (i < 2) printf("  ----+---+----\n");
+    }
+    return 0;
+}
