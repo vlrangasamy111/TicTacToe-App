@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    char board[3][3];
+    char player1_symbol, player2_symbol;
+    int current_player;  // 1 for Player 1, 2 for Player 2
+    
+    // Initialize board (from previous use case)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            board[i][j] = '-';
+        }
+    }
+    
+    // Seed random number generator for toss
+    srand(time(NULL));
+    
+    // Random toss: 0 -> Player 1 starts, 1 -> Player 2 starts
+    int toss = rand() % 2;
+    
+    if (toss == 0) {
+        current_player = 1;
+        player1_symbol = 'X';  // Starter gets X
+        player2_symbol = 'O';
+        printf("Toss result: Player 1 starts first! Player 1: X, Player 2: O\n");
+    } else {
+        current_player = 2;
+        player2_symbol = 'X';  // Starter gets X
+        player1_symbol = 'O';
+        printf("Toss result: Player 2 starts first! Player 1: O, Player 2: X\n");
+    }
+    
+    // Print board (from previous use case)
+    printf("  1 2 3\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", i + 1);
+        for (int j = 0; j < 3; j++) {
+            printf("%c ", board[i][j]);
+            if (j < 2) printf("| ");
+        }
+        printf("\n");
+        if (i < 2) printf("  ----+---+----\n");
+    }
+    
+    printf("Current player to start: Player %d\n", current_player);
+    
+    // Game state variables ready for next moves (e.g., use current_player in loop)
+    return 0;
+}
