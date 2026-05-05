@@ -1,0 +1,152 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class TicTacToe {
+
+    private char[][] board = new char[3][3];
+    private char currentPlayer = 'X'; // Human = X, Computer = O
+    private boolean gameRunning = true;
+    private Random random = new Random();
+    private Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        TicTacToe game = new TicTacToe();
+        game.startGame();
+    }
+
+    // Initialize board
+    public TicTacToe() {
+        initializeBoard();
+    }
+
+    private void initializeBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    // Start game loop (UC8)
+    public void startGame() {
+        printBoard();
+
+        while (gameRunning) {
+
+            if (currentPlayer == 'X') {
+                playerMove();
+            } else {
+                computerMove();
+            }
+
+            printBoard();
+
+            // UC9: Check win
+            if (checkWin(currentPlayer)) {
+                System.out.println(currentPlayer + " wins!");
+                gameRunning = false;
+            }
+            // UC10: Check draw
+            else if (isBoardFull()) {
+                System.out.println("It's a draw!");
+                gameRunning = false;
+            }
+            // Switch turn
+            else {
+                switchPlayer();
+            }
+        }
+    }
+
+    // UC6: Update board
+    private boolean updateBoard(int row, int col, char symbol) {
+        if (isValidMove(row, col)) {
+            board[row][col] = symbol;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isValidMove(int row, int col) {
+        return row >= 0 && row < 3 &&
+               col >= 0 && col < 3 &&
+               board[row][col] == ' ';
+    }
+
+    // Human move
+    private void playerMove() {
+        int row, col;
+
+        while (true) {
+            System.out.print("Enter row (0-2) and column (0-2): ");
+            row = scanner.nextInt();
+            col = scanner.nextInt();
+
+            if (updateBoard(row, col, 'X')) {
+                break;
+            } else {
+                System.out.println("Invalid move, try again.");
+            }
+        }
+    }
+
+    // UC7: Computer random move
+    private void computerMove() {
+        boolean moveMade = false;
+
+        while (!moveMade) {
+            int slot = random.nextInt(9) + 1;
+
+            int row = (slot - 1) / 3;
+            int col = (slot - 1) % 3;
+
+            if (updateBoard(row, col, 'O')) {
+                System.out.println("Computer chose slot: " + slot);
+                moveMade = true;
+            }
+        }
+    }
+
+    // UC9: Win detection
+    private boolean checkWin(char symbol) {
+
+        // Rows & Columns
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||
+                (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {
+                return true;
+            }
+        }
+
+        // Diagonals
+        return (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
+               (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol);
+    }
+
+    // UC10: Draw detection
+    private boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Switch player
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+    }
+
+    // Print board
+    private void printBoard() {
+        System.out.println();
+        for (int i = 0; i < 3; i++) {
+            System.out.println(" " + board[i][0] + " | " + board[i][1] + " | " + board[i][2]);
+            if (i < 2) System.out.println("---|---|---");
+        }
+        System.out.println();
+    }
+}
